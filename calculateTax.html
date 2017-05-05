@@ -1,0 +1,213 @@
+<!DOCTYPE html>
+<html lang="en">
+	<head>
+		<title>JavaScript</title>
+		<meta charset="utf-8">
+		<link href="https://fonts.googleapis.com/css?family=Open+Sans" rel="stylesheet">
+		<style>
+			body {
+				background-color: #34495e;
+				font-family: 'Open Sans', sans-serif;
+			}
+
+			header {
+				text-align: center;
+			}
+
+			.container {
+				background-color: #bdc3c7;
+				border-radius: 5px;
+				width: 40%;
+				margin: 2% auto;
+				padding: 5%;
+				text-align: center;
+			}
+
+			input {
+				color: #2ecc71;
+				font-size: 1.3em;
+				width: 90%;
+				padding: 2%;
+				border: none;
+				border-radius: 5px;
+			}
+
+			input:focus {
+				border: none;
+			}
+
+			legend {
+				font-size: 1.2em;
+			}
+
+			.error-message {
+				color: #c0392b;
+				font-weight: bold;
+			}
+
+			/*Calculate button*/
+			#calculate {
+				padding: 2% 4%;
+				color: white;
+				background-color: #2ecc71;
+				border: solid #2ecc71 2px;
+				border-radius: 5px;
+				font-weight: bold;
+			}
+
+			#calculate:hover {
+				padding: 2% 4%;
+				color: #2ecc71;
+				background-color: inherit;
+				border: solid #2ecc71 2px;
+				border-radius: 5px;
+				font-weight: bold;
+				transition-duration: 0.5s;
+				cursor: pointer;
+			}
+
+			/*Clear button*/
+			#clear {
+				padding: 2% 6%;
+				color: white;
+				background-color: #e74c3c;
+				border: solid #e74c3c 2px;
+				border-radius: 5px;
+				font-weight: bold;
+			}
+
+			#clear:hover {
+				padding: 2% 6%;
+				color: #e74c3c;
+				background-color: inherit;
+				border: solid #e74c3c 2px;
+				border-radius: 5px;
+				font-weight: bold;
+				transition-duration: 0.5s;
+				cursor: pointer;
+			}
+
+			@media only screen and (max-width: 800px) {
+				.container {
+					width: 75%;
+				}
+			}
+
+			@media only screen and (max-width: 480px) {
+				.container {
+					width: 80%;
+				}
+
+				#calculate {
+					width: 100%;
+					padding: 4%;
+					font-size: 1.4em;
+				}
+
+				#calculate:hover {
+					padding: 4%;
+				}
+
+				#clear {
+					width: 100%;
+					padding: 4%;
+					font-size: 1.4em;
+				}
+
+				#clear:hover {
+					padding: 4%;
+				}
+			}
+		</style>
+	</head>
+
+	<body>
+
+
+
+	<div class="container">
+		<header>
+			<h1>Calculate Sales Tax</h1>
+		</header>
+
+		<fieldset>
+			<legend>Enter Subtotal and Tax Rate.</legend>
+
+			<label for="sub-total">Subtotal:</label><br>
+			$ <input type="text" id="sub-total"><br>
+			<div id="sub-total-error" class="error-message"></div>
+
+			<label for="tax-rate">Taxrate:</label><br>
+			$ <input type="text" id="tax-rate"><br>
+			<div id="tax-rate-error" class="error-message"></div>
+		</fieldset>
+		<br>
+		<fieldset>
+			<legend>Result</legend>
+			<label for="sales-tax">Sales tax:</label><br>
+			$ <input type="text" id="sales-tax" disabled><br>
+
+			<label for="total">Total:</label><br>
+			$ <input type="text" id="total" disabled><br>
+		</fieldset>
+
+		<br>
+		<button type="button" id="calculate">Calculate</button> &nbsp; &nbsp;
+		<button type="button" id="clear">Clear</button>
+
+
+	</div>
+
+	<script>
+
+	/////////////////CALCULATE TAX///////////////////
+
+	var $ = function(id) {
+		return document.getElementById(id);
+	}
+
+	var performCalculation = function() {
+		var subTotal = $("sub-total").value;
+		subTotal = parseFloat(subTotal);
+		var taxRate = $("tax-rate").value;
+		taxRate = parseFloat(taxRate);
+		var isValid = true;
+
+		if (isNaN(subTotal) || subTotal < 1 || subTotal == "") {
+			$("sub-total-error").innerHTML = "Please enter a valid sub-total.";
+			isValid = false;
+		} else if (isNaN(taxRate) || taxRate == "" || !(taxRate < 1) ) {
+			$("tax-rate-error").innerHTML = "Please enter a valid tax-rate.";
+			isValid = false;
+		}
+
+		if (isValid) {
+
+			var tax = subTotal * taxRate;
+			tax = parseFloat(tax);
+
+			var total = subTotal + tax;
+			total = parseFloat(total);
+
+			$("sales-tax").value = tax.toFixed(2);
+			$("total").value = total.toFixed(2);
+		}
+	}
+
+	var clearFields = function() {
+		$("sub-total").value = "";
+		$("tax-rate").value = "";
+		$("sales-tax").value = "";
+		$("total").value = "";
+	}
+
+
+	window.onload = function() {
+		$("calculate").onclick = performCalculation;
+		$("clear").onclick = clearFields;
+		$("sub-total").focus();
+	}
+
+	</script>
+	</body>
+</html>
